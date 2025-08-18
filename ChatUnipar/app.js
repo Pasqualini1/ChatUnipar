@@ -1,4 +1,4 @@
-// Fundo animado de linhas
+
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -43,7 +43,6 @@ window.addEventListener('resize', ()=>{
     canvas.height = window.innerHeight;
 });
 
-// Chat
 let stompClient = null;
 let username = null;
 
@@ -53,7 +52,6 @@ const sendBtn = document.getElementById('send-btn');
 
 input.placeholder = "Digite seu nome";
 
-// Função addMessage com estilo tipo WhatsApp
 function addMessage(sender, text) {
     const div = document.createElement('div');
     div.classList.add('message');
@@ -65,7 +63,7 @@ function addMessage(sender, text) {
         div.classList.add('system');
         div.textContent = text;
     } else {
-        div.classList.add('other'); // Alinha à esquerda
+        div.classList.add('other'); 
         div.innerHTML = `<span class="msg-sender">${sender}</span><span class="msg-text">${text}</span>`;
     }
 
@@ -73,7 +71,6 @@ function addMessage(sender, text) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// Conexão WebSocket com ngrok
 function connect() {
     const socket = new SockJS(
         'https://583bdbfae0a5.ngrok-free.app/chat-websocket',
@@ -94,7 +91,6 @@ function connect() {
             }
         });
 
-        // Envia JOIN para os outros clientes
         if(username) {
             stompClient.send("/app/addUser", {}, JSON.stringify({sender: username, type: "JOIN"}));
         }
