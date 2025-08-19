@@ -10,8 +10,8 @@ body {
     overflow: hidden;
     background: #0f2027;
     display: flex;
-    justify-content: center; 
-    align-items: center;    
+    justify-content: center;
+    align-items: center;
     height: 100vh;
 }
 
@@ -38,7 +38,7 @@ body {
 }
 
 #chat-header {
-    padding: 18px 0;
+    padding: 18px 50px 18px 20px; 
     text-align: center;
     font-size: 1.6rem;
     font-weight: bold;
@@ -48,6 +48,25 @@ body {
     border-top-right-radius: 20px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     letter-spacing: 1px;
+    position: relative; 
+}
+
+.exit-btn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: #f1f3f5;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.exit-btn:hover {
+    color: #ff4d4d;
+    transform: translateY(-50%) scale(1.2);
 }
 
 #messages {
@@ -87,6 +106,15 @@ body {
     font-size: 0.7rem;
     color: #555;
     margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.msg-time {
+    display: block;
+    font-size: 0.65rem;
+    color: #777;
+    margin-top: 2px;
+    text-align: right;
 }
 
 .msg-text {
@@ -142,4 +170,3 @@ body {
     background-color: rgba(0,0,0,0.15);
     border-radius: 3px;
 }
-
