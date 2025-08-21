@@ -57,18 +57,18 @@ function getCurrentTime() {
     return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-function addMessage(sender, text) {
+function addMessage(sender, text, type = "CHAT") {
     const div = document.createElement('div');
     div.classList.add('message');
 
     const time = `<div class="msg-time">${getCurrentTime()}</div>`;
 
-    if (sender === username) {
-        div.classList.add('self');
-        div.innerHTML = `<span class="msg-text">${text}</span>${time}`;
-    } else if (sender === 'system') {
+    if (type === "SYSTEM") {
         div.classList.add('system');
         div.textContent = text;
+    } else if (sender === username) {
+        div.classList.add('self');
+        div.innerHTML = `<span class="msg-text">${text}</span>${time}`;
     } else {
         div.classList.add('other');
         div.innerHTML = `<span class="msg-sender">${sender}</span><span class="msg-text">${text}</span>${time}`;
@@ -80,7 +80,7 @@ function addMessage(sender, text) {
 
 function connect() {
     const socket = new SockJS(
-        'https://25a9eb0b9e99.ngrok-free.app/chat-websocket',
+        'https://67e1c8dd9c1a.ngrok-free.app/chat-websocket',
         { headers: { 'ngrok-skip-browser-warning': 'true' } }
     );
     stompClient = Stomp.over(socket);
@@ -92,9 +92,9 @@ function connect() {
             const message = JSON.parse(messageOutput.body);
 
             if (message.type === "JOIN") {
-                addMessage('system', `${message.sender} entrou no chat`);
+                addMessage(null, `${message.sender} entrou no chat`, "SYSTEM");
             } else if (message.type === "LEAVE") {
-                addMessage('system', `${message.sender} saiu do chat`);
+                addMessage(null, `${message.sender} saiu do chat`, "SYSTEM");
             } else if (message.type === "CHAT") {
                 addMessage(message.sender, message.content);
             }
@@ -143,12 +143,11 @@ if (header) {
     header.appendChild(exitBtn);
 
     exitBtn.addEventListener('click', () => {
-        if (stompClient && stompClient.connected) {
-
+        if (stompClient && stompClient.connected && username) {
             stompClient.send(
-                "/app/sendMessage",
+                "/app/leaveUser",
                 {},
-                JSON.stringify({ sender: username, type: "LEAVE", content: `${username} saiu do chat` })
+                JSON.stringify({ sender: username, type: "LEAVE" })
             );
 
             stompClient.disconnect();
